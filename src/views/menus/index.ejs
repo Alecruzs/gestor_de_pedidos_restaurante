@@ -1,0 +1,120 @@
+<%- include('../partials/header') %>
+
+    <section class="card">
+        <h1>Menú</h1>
+
+        <% if (mensaje) { %>
+            <div class="notice success">
+                <%= mensaje %>
+            </div>
+            <% } %>
+                <% if (error) { %>
+                    <div class="notice error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <div class="actions">
+                            <a class="btn" href="/">Volver</a>
+                            <button class="btn secondary" type="button" data-fetch-list="/api/menus"
+                                data-target="#menu-api-list" data-auto-load="true">Cargar desde API</button>
+                        </div>
+
+                        <div class="forms-grid">
+                            <form action="/menus" method="POST" data-api-endpoint="/api/menus" data-method="POST"
+                                data-success-path="/menus">
+                                <h2>Nuevo plato</h2>
+                                <label>
+                                    Nombre
+                                    <input type="text" name="nombre" placeholder="Ej: Pizza Margarita" required />
+                                </label>
+                                <label>
+                                    Precio
+                                    <input type="number" step="0.01" min="0" name="precio" required />
+                                </label>
+                                <label>
+                                    Categoría
+                                    <select name="categoria" required>
+                                        <option value="">Seleccione una categoría</option>
+                                        <% categorias.forEach((categoria)=> { %>
+                                            <option value="<%= categoria._id %>">
+                                                <%= categoria.nombre %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </label>
+                                <button class="btn" type="submit">Guardar</button>
+                            </form>
+
+                            <form data-search-endpoint="/api/menus" data-result-target="#menu-busqueda">
+                                <h2>Buscar menú por ID</h2>
+                                <label>
+                                    ID del menú
+                                    <input type="text" name="id" placeholder="Ej: 64d..." required />
+                                </label>
+                                <button class="btn secondary" type="submit">Buscar</button>
+                                <div id="menu-busqueda" class="api-results"></div>
+                            </form>
+                        </div>
+
+                        <div class="table-wrap">
+                            <h2>Listado desde API</h2>
+                            <div id="menu-api-list" class="api-results"></div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Categoría</th>
+                                        <th>Disponibilidad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% menus.forEach((menu)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= menu.nombre %>
+                                            </td>
+                                            <td>$<%= menu.precio %>
+                                            </td>
+                                            <td>
+                                                <%= menu.categoria ? menu.categoria.nombre : 'Sin categoría' %>
+                                            </td>
+                                            <td>
+                                                <% if (menu.disponible) { %>
+                                                    <span class="status available">Disponible</span>
+                                                    <% } else { %>
+                                                        <span class="status unavailable">No disponible</span>
+                                                        <% } %>
+                                            </td>
+                                            <td>
+                                                <a class="btn secondary" href="/menus/<%= menu._id %>/editar">Editar</a>
+                                                <% if (menu.disponible) { %>
+                                                    <a class="btn warning api-action"
+                                                        href="/menus/<%= menu._id %>/disponible/false"
+                                                        data-api-endpoint="/api/menus/no-disponible/<%= menu._id %>"
+                                                        data-method="PUT" data-success-path="/menus">Desactivar</a>
+                                                    <% } else { %>
+                                                        <a class="btn secondary api-action"
+                                                            href="/menus/<%= menu._id %>/disponible/true"
+                                                            data-api-endpoint="/api/menus/disponible/<%= menu._id %>"
+                                                            data-method="PUT" data-success-path="/menus">Activar</a>
+                                                        <% } %>
+                                                            <a class="btn danger api-action"
+                                                                href="/menus/<%= menu._id %>/eliminar"
+                                                                data-api-endpoint="/api/menus/<%= menu._id %>"
+                                                                data-method="DELETE"
+                                                                data-success-path="/menus">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+    </section>
+
+    <%- include('../partials/footer') %>

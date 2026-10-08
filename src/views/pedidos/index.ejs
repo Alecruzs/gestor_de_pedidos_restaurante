@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+
+    <section class="card">
+        <h1>Pedidos</h1>
+
+        <% if (mensaje) { %>
+            <div class="notice success">
+                <%= mensaje %>
+            </div>
+            <% } %>
+                <% if (error) { %>
+                    <div class="notice error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <div class="actions">
+                            <a class="btn" href="/">Volver</a>
+                            <button class="btn secondary" type="button" data-fetch-list="/api/pedidos"
+                                data-target="#pedido-api-list" data-auto-load="true">Cargar desde API</button>
+                        </div>
+
+                        <div class="forms-grid">
+                            <form action="/pedidos" method="POST" data-api-endpoint="/api/pedidos" data-method="POST"
+                                data-success-path="/pedidos">
+                                <h2>Nuevo pedido</h2>
+                                <label>
+                                    Menús
+                                    <select name="menus" multiple size="8" required>
+                                        <% menus.forEach((menu)=> { %>
+                                            <option value="<%= menu._id %>">
+                                                <%= menu.nombre %> - $<%= menu.precio %>
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </label>
+                                <label>
+                                    Observaciones
+                                    <textarea name="observaciones" placeholder="Ej: Sin cebolla"></textarea>
+                                </label>
+                                <button class="btn" type="submit">Crear pedido</button>
+                            </form>
+
+                            <form data-search-endpoint="/api/pedidos" data-result-target="#pedido-busqueda">
+                                <h2>Buscar pedido por ID</h2>
+                                <label>
+                                    ID del pedido
+                                    <input type="text" name="id" placeholder="Ej: 64d..." required />
+                                </label>
+                                <button class="btn secondary" type="submit">Buscar</button>
+                                <div id="pedido-busqueda" class="api-results"></div>
+                            </form>
+                        </div>
+
+                        <div class="table-wrap">
+                            <h2>Listado desde API</h2>
+                            <div id="pedido-api-list" class="api-results"></div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Menús</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Observaciones</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% pedidos.forEach((pedido)=> { %>
+                                        <tr>
+                                            <td>
+                                                <% pedido.menus.forEach((menu)=> { %>
+                                                    <div>
+                                                        <%= menu.nombre %>
+                                                    </div>
+                                                    <% }) %>
+                                            </td>
+                                            <td>$<%= pedido.total %>
+                                            </td>
+                                            <td>
+                                                <form action="/pedidos/<%= pedido._id %>/estado" method="POST"
+                                                    data-api-endpoint="/api/pedidos/estado/<%= pedido._id %>"
+                                                    data-method="PUT" data-success-path="/pedidos">
+                                                    <select name="estado">
+                                                        <% estados.forEach((estado)=> { %>
+                                                            <option value="<%= estado %>" <%=pedido.estado===estado
+                                                                ? 'selected' : '' %>>
+                                                                <%= estado %>
+                                                            </option>
+                                                            <% }) %>
+                                                    </select>
+                                                    <button class="btn secondary" type="submit">Actualizar</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <%= pedido.observaciones || 'Sin observaciones' %>
+                                            </td>
+                                            <td>
+                                                <a class="btn danger api-action"
+                                                    href="/pedidos/<%= pedido._id %>/eliminar"
+                                                    data-api-endpoint="/api/pedidos/<%= pedido._id %>"
+                                                    data-method="DELETE" data-success-path="/pedidos">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+    </section>
+
+    <%- include('../partials/footer') %>

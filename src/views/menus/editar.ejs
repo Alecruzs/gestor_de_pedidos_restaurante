@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+    <section class="card">
+        <h1>Editar plato</h1>
+
+        <% if (mensaje) { %>
+            <div class="notice success">
+                <%= mensaje %>
+            </div>
+            <% } %>
+                <% if (error) { %>
+                    <div class="notice error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <form action="/menus/<%= menu._id %>/editar" method="POST"
+                            data-api-endpoint="/api/menus/<%= menu._id %>" data-method="PUT" data-success-path="/menus">
+                            <label>
+                                Nombre
+                                <input type="text" name="nombre" value="<%= menu.nombre %>" required />
+                            </label>
+                            <label>
+                                Precio
+                                <input type="number" step="0.01" min="0" name="precio" value="<%= menu.precio %>"
+                                    required />
+                            </label>
+                            <label>
+                                Categoría
+                                <select name="categoria" required>
+                                    <% categorias.forEach((categoria)=> { %>
+                                        <option value="<%= categoria._id %>" <%=menu.categoria &&
+                                            menu.categoria._id.toString()===categoria._id.toString() ? 'selected' : ''
+                                            %>>
+                                            <%= categoria.nombre %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </label>
+                            <div class="actions">
+                                <button class="btn" type="submit">Actualizar</button>
+                                <a class="btn secondary" href="/menus">Cancelar</a>
+                            </div>
+                        </form>
+    </section>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,79 @@
+<%- include('../partials/header') %>
+
+    <section class="card">
+        <h1>Categorías</h1>
+
+        <% if (mensaje) { %>
+            <div class="notice success">
+                <%= mensaje %>
+            </div>
+            <% } %>
+                <% if (error) { %>
+                    <div class="notice error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <div class="actions">
+                            <a class="btn" href="/">Volver</a>
+                            <button class="btn secondary" type="button" data-fetch-list="/api/categorias"
+                                data-target="#categoria-api-list" data-auto-load="true">Cargar desde API</button>
+                        </div>
+
+                        <div class="forms-grid">
+                            <form action="/categorias" method="POST" data-api-endpoint="/api/categorias"
+                                data-method="POST" data-success-path="/categorias">
+                                <h2>Nueva categoría</h2>
+                                <label>
+                                    Nombre
+                                    <input type="text" name="nombre" placeholder="Ej: Pizzas" required />
+                                </label>
+                                <button class="btn" type="submit">Guardar</button>
+                            </form>
+
+                            <form data-search-endpoint="/api/categorias" data-result-target="#categoria-busqueda">
+                                <h2>Buscar categoría por ID</h2>
+                                <label>
+                                    ID de categoría
+                                    <input type="text" name="id" placeholder="Ej: 64d..." required />
+                                </label>
+                                <button class="btn secondary" type="submit">Buscar</button>
+                                <div id="categoria-busqueda" class="api-results"></div>
+                            </form>
+                        </div>
+
+                        <div class="table-wrap">
+                            <h2>Listado desde API</h2>
+                            <div id="categoria-api-list" class="api-results"></div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% categorias.forEach((categoria)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= categoria.nombre %>
+                                            </td>
+                                            <td>
+                                                <a class="btn secondary"
+                                                    href="/categorias/<%= categoria._id %>/editar">Editar</a>
+                                                <a class="btn danger api-action"
+                                                    href="/categorias/<%= categoria._id %>/eliminar"
+                                                    data-api-endpoint="/api/categorias/<%= categoria._id %>"
+                                                    data-method="DELETE" data-success-path="/categorias">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+    </section>
+
+    <%- include('../partials/footer') %>

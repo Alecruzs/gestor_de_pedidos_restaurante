@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+    <section class="card">
+        <h1>Editar categoría</h1>
+
+        <% if (mensaje) { %>
+            <div class="notice success">
+                <%= mensaje %>
+            </div>
+            <% } %>
+                <% if (error) { %>
+                    <div class="notice error">
+                        <%= error %>
+                    </div>
+                    <% } %>
+
+                        <form action="/categorias/<%= categoria._id %>/editar" method="POST"
+                            data-api-endpoint="/api/categorias/<%= categoria._id %>" data-method="PUT"
+                            data-success-path="/categorias">
+                            <label>
+                                Nombre
+                                <input type="text" name="nombre" value="<%= categoria.nombre %>" required />
+                            </label>
+                            <div class="actions">
+                                <button class="btn" type="submit">Actualizar</button>
+                                <a class="btn secondary" href="/categorias">Cancelar</a>
+                            </div>
+                        </form>
+    </section>
+
+    <%- include('../partials/footer') %>

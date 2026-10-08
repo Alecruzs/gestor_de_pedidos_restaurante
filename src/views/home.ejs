@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+
+    <section class="hero card">
+        <div class="title">Gestión inteligente de pedidos para tu restaurante</div>
+        <p>
+            Sistema MVC para administrar categorías, platos del menú y pedidos en tiempo real,
+            pensado para una cocina dinámica con control sencillo y una experiencia visual más cuidada.
+        </p>
+        <div class="actions">
+            <a class="btn" href="/categorias">Gestionar categorías</a>
+            <a class="btn secondary" href="/menus">Gestionar menú</a>
+            <a class="btn" href="/pedidos">Gestionar pedidos</a>
+        </div>
+    </section>
+
+    <section class="grid-2">
+        <div class="card">
+            <h2>Categorías</h2>
+            <p>Organiza cada plato en grupos como pizzas, bebidas, entradas o postres para una gestión más clara del
+                restaurante.</p>
+        </div>
+        <div class="card">
+            <h2>Menú</h2>
+            <p>Agrega, modifica, activa o desactiva platos con precio, disponibilidad y asociación directa a su
+                categoría.</p>
+        </div>
+        <div class="card">
+            <h2>Pedidos</h2>
+            <p>Genera pedidos con varios menús, calcula el total automáticamente y actualiza su estado según el avance
+                de cocina.</p>
+        </div>
+        <div class="card">
+            <h2>Observaciones clave</h2>
+            <ul>
+                <li>Se habilita el borrado para cada modelo.</li>
+                <li>Los estados posibles son: pendiente, en preparación, listo, entregado y cancelado.</li>
+                <li>Los pedidos inician en estado “Pendiente”.</li>
+                <li>Los menús se crean como disponibles por defecto.</li>
+                <li>Cada plato incluye valor económico y categoría.</li>
+            </ul>
+        </div>
+    </section>
+
+    <%- include('partials/footer') %>
